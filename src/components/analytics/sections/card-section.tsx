@@ -3,9 +3,9 @@ import { Loader } from "../loader";
 import { ICardSection } from "../types";
 export default function CardSection({title, card}: ICardSection): JSX.Element {
    return (
-      <div className="row mt-3">
+      <div className="row my-3">
          <div className="col-12">
-            <h4 className="h3">{title}</h4>
+            <h4 className="h4 border-bottom border-default mb-3 pb-2">{title}</h4>
          </div>
          {card? (
             <>

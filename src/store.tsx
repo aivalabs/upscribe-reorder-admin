@@ -9,7 +9,9 @@ export const useAnalytics = create<IAnalyticsState>()(
       orderCountSources: {} as IOrderCountSources,
       setIOrderCountSources: (oc: IOrderCountSources) => set((s) => ({...s, orderCountSources: oc })),
       topReorderedProducts: [],
-      setTopReorderedProducts: (trp: ITopReorderedProducts[]) => set((s) => ({...s, topReorderedProducts: trp}))
+      setTopReorderedProducts: (trp: ITopReorderedProducts[]) => set((s) => ({...s, topReorderedProducts: trp})),
+      totalReorderCounts: 0,
+      setTotalReorderCounts: (t: number) => set((s) => ({...s, totalReorderCounts: t})),
     }))
   )
 );

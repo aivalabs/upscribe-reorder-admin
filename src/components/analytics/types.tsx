@@ -31,6 +31,8 @@ export interface IAnalyticsState {
    setIOrderCountSources: (IOrderCountSources: IOrderCountSources) => void;
    topReorderedProducts: ITopReorderedProducts[];
    setTopReorderedProducts: (trp: ITopReorderedProducts[]) => void;
+   totalReorderCounts: number;
+   setTotalReorderCounts: (t: number) => void;
 }
 
 
@@ -43,4 +45,5 @@ export interface IOtherSectionProp {
    title: string;
    other: IOtherAnalyticsInfo;
    topReorderedProducts: ITopReorderedProducts[];
+   totalReorderCounts: number;
 }

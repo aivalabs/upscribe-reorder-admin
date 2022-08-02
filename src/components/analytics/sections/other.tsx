@@ -6,27 +6,67 @@ import Card from "../snippents/card";
 import SectionTitle from "../snippents/section-title";
 import { IOtherSectionProp, ITopReorderedProducts } from "../types";
 import { useUtility } from "../../../store";
+import { Loader } from '../loader';
 
 ChartJS.register(ArcElement, Tooltip, Legend,ChartDataLabels );
-export default function Other({title, other, topReorderedProducts} : IOtherSectionProp ): JSX.Element {   
+export default function Other({title, other, topReorderedProducts, totalReorderCounts} : IOtherSectionProp ): JSX.Element {   
    const {isLoading} = useUtility();
+   if(!topReorderedProducts.length) return <Loader />;
+   const chartData: any[] = topReorderedProducts.slice(0,2);
+   const otherData: any[] = topReorderedProducts.slice(2,topReorderedProducts.length-1);
+   chartData.push({
+      title: 'Other',
+      price: '$',
+      count: otherData.map((item) => item.count).reduce((acc, cur) => acc + cur, 0)
+   })
    const data: any = { 
-      labels: ['Product 1', 'Product 2', 'Others'],
+      title: 'Top Reordered Products2',
+      labels: chartData.map((item: any) => item.title),
       datasets: [{
-         data: [27.92, 17.53, 14.94],
-         backgroundColor: ['green', 'blue', 'yellow'],
+         data: chartData,
+         backgroundColor: ['#3050f3', '#308df8', '#4dbe4b'],
          borderWidth: 0.5 ,
-         borderColor: '#FFF'
+         borderColor: '#FFF',
+         fontColor: '#FFF', 
+         parsing: {
+            key: 'count'
+         },
+         title: {
+            display: false,
+            text: 'Top Reordered Products 222',
+            position: 'top',
+            fontSize: 20,
+            fontColor: '#000',
+            fullSize: true,
+            padding: 5
+         },
+         datalabels: {
+            color: 'white',
+            textAlign: 'center',
+            font: {
+               lineHeight: 1.6,
+               color: '#FFF'
+            },
+            
+            formatter: function(value: any, ctx: any) {
+               return ((value.count * 100)/totalReorderCounts).toFixed(0)+ '%';
+            }  ,
+            tooltips: {
+               enabled: false
+            },
+            
+         }
       }]
    };
    const options: any =  {
       title: {
-         display: true,
-         text: 'What % of orders are from',
+         display: false,
+         text: 'Top Reordered Products 222',
          position: 'top',
          fontSize: 20,
          fontColor: '#000',
-         padding: 20
+         fullSize: true,
+         padding: 5
       },
       plugins: {
          legend: {
@@ -38,28 +78,15 @@ export default function Other({title, other, topReorderedProducts} : IOtherSecti
                padding: 15
             }
         }
+        
       },
       tooltips: {
          enabled: false
-      }      
+      },   
    };
-
-   const plugins: any = {
-      datalabels: {
-         color: '#FFF',
-         textAlign: 'center',
-         font: {
-            lineHeight: 1.6,
-            color: '#FFF'
-         },
-         formatter: function(value: any, ctx: any) {
-            return ctx.chart.data.labels[ctx.dataIndex] + '\n' + value + '%';
-         }
-      }
-   }
    return (
       <>
-         <SectionTitle title={title} />
+         <SectionTitle title={title}/>
          <div className="row mt-3">
             <div className="col-12 col-md-3">
                <div className="d-flex flex-column">
@@ -70,31 +97,36 @@ export default function Other({title, other, topReorderedProducts} : IOtherSecti
                   <Card name="Highest Order Value" value={other.lowestOrderValue} />
                </div>
             </div>
-            <div className="col-12 col-md-9">
-               <div className="row">
-                  <div className="col-12 col-md-7">
-                  <Chart data={data} type="doughnut" options={options} plugins={[plugins]}/>
-                  </div>
-                  <div className="col-12 col-md-5">                        
-                     <table className="table">
-                        <thead>
-                           <tr>
-                              <th>Product</th>
-                              <th>Price</th>
-                              <th>Reorders</th>
-                           </tr>
-                        </thead>
-                        <tbody>
-                           {isLoading && <tr><td colSpan={3} align="center"><span className="spinner-grow" role="status"></span></td></tr>}
-                           {!isLoading && !topReorderedProducts[0]?.title? (<tr><td colSpan={3}>Not product found!</td></tr>): !isLoading && topReorderedProducts.map((product: ITopReorderedProducts, index: number) => {
-                              return (<tr key={index}>
-                                 <td>{product.title}</td>
-                                 <td>{product.price}</td>
-                                 <td>{product.count}</td> 
-                              </tr>)
-                           })}
-                        </tbody>
-                     </table>
+            <div className="col-12 col-md-9">               
+               <div className='border p-2'>
+                  <div className="row">
+                     <div className="col-12 col-md-6">
+                        <h4 className='h5 position-absolute'>Top Reordered Products</h4>
+                        <div className="d-flex align-item-start justify-content-center chartWrapper">
+                           <Chart style={{maxWidth: '350px', maxHeight: '350px'}} data={data} type="doughnut" options={options}/>
+                        </div>
+                     </div>
+                     <div className="col-12 col-md-6">                        
+                        <table className="table border-left">
+                           <thead>
+                              <tr>
+                                 <th>Product</th>
+                                 <th>Price</th>
+                                 <th>Reorders</th>
+                              </tr>
+                           </thead>
+                           <tbody>
+                              {isLoading && <tr><td colSpan={3} align="center"><span className="spinner-grow" role="status"></span></td></tr>}
+                              {!isLoading && !topReorderedProducts[0]?.title? (<tr><td colSpan={3}>Not product found!</td></tr>): !isLoading && topReorderedProducts.map((product: ITopReorderedProducts, index: number) => {
+                                 return (<tr key={index}>
+                                    <td>{product.title}</td>
+                                    <td>{product.price}</td>
+                                    <td>{product.count}</td> 
+                                 </tr>)
+                              })}
+                           </tbody>
+                        </table>
+                     </div>
                   </div>
                </div>
             </div>

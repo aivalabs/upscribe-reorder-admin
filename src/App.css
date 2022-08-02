@@ -6,63 +6,29 @@ li {
   list-style: none;
 }
 
-
-#my-pie-chart-container {
-  display: flex;
-  align-items: center;
+a {
+  color: #333;
+  text-decoration: none;
+}
+a.active {
+  font-weight: 700;
+}
+td {
+  border: none !important;
 }
 
-#my-pie-chart {
-  background: conic-gradient(brown 0.00%, black 0.00% 0.55%, blue 0.55% 6.08%, green 6.08% 13.68%, yellow 13.68% 23.27%, orange 23.27% 40.47%, red 40.47%);
-  border-radius: 50%;
-    width: 150px;
-    height: 150px;
+.chartWrapper {
+  border-right: 1px solid #ddd;
 }
 
-#legenda {
-  margin-left: 20px;
-  background-color: white;
-  padding: 5px;
+.date-range-picker {
+  position: absolute;
+  z-index: 1;
+  top: 100%;
+  right: 3%;
+  display: none !important;
+  box-shadow: 0 0 2px 2px #ddd;
 }
-
-.entry {
-  display: flex;
-  align-items: center;
-}
-
-.entry-color {
-    height: 10px;
-    width: 10px;
-}
-
-.entry-text {
-  margin-left: 5px;
-}
-
-#color-red {
-  background-color: red;
-}
-
-#color-orange {
-  background-color: orange;
-}
-
-#color-yellow {
-  background-color: yellow;
-}
-
-#color-green {
-  background-color: green;
-}
-
-#color-blue {
-  background-color: blue;
-}
-
-#color-black {
-  background-color: black;
-}
-
-#color-brown {
-  background-color: brown;
+.date-range-picker.show{
+  display: inline-flex  !important;
 }
