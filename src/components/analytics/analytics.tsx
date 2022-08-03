@@ -1,14 +1,19 @@
 import { useEffect } from "react";
 import { useAnalytics, useUtility } from "../../store";
-import { orderCounters, topReorderedProducts as topReorderedProductsAPI } from "./api";
+import { orderCounters } from "./api";
 import { Loader } from "./loader";
 import CardSection from "./sections/card-section";
 import Other from "./sections/other";
-import { IOrderCountSources } from "./types";
 import PageTitle from "./snippents/page-title";
 import AnalyticsFilter from "./snippents/analytics-filter";
+import moment from "moment";
 
-
+const currentDate = new Date();
+const intialAnalyticsData = {
+   store_domain: 'upscribe-emporium.myshopify.com',
+   start_date: moment(currentDate).subtract(1, 'M').format('YYYY-MM-DD'),
+   end_date: moment(currentDate).format('YYYY-MM-DD')
+}
 export default function Analytics() {   
    const {
       orderCountSources: { orderCounts, revenue, other },
@@ -20,28 +25,19 @@ export default function Analytics() {
 
    const { isLoading, setIsLoading } = useUtility();
 
-
    useEffect((): any => {      
       setIsLoading(true);      
-      orderCounters()
-         .then((data: IOrderCountSources) => {
-            setIOrderCountSources(data);
+      orderCounters(intialAnalyticsData)
+         .then((data: any) => {
+            setIOrderCountSources(data.orderSummery);
+            setTopReorderedProducts(data.reorderedProducts);
+            setTotalReorderCounts(data.topReorderEventCount);
             setIsLoading(false);
+            
          })
          .catch((err: Error) => console.log(err));
-      getTopReorderedProducts();
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
-   const getTopReorderedProducts = (): void => {
-      setTopReorderedProducts([]);
-      topReorderedProductsAPI()
-         .then((data: any) => {
-            console.log(data.totalReorderCounts, 'totalReorderCounts');
-            setTopReorderedProducts(data.products);
-            setTotalReorderCounts(data.totalReorderCounts);
-         })
-         .catch((err: Error) => console.log(err));
-   }
    return (
       <>
          <PageTitle title="Analytics" element={<AnalyticsFilter />}/>

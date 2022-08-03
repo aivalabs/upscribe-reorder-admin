@@ -10,13 +10,12 @@ import { Loader } from '../loader';
 
 ChartJS.register(ArcElement, Tooltip, Legend,ChartDataLabels );
 export default function Other({title, other, topReorderedProducts, totalReorderCounts} : IOtherSectionProp ): JSX.Element {   
-   const {isLoading} = useUtility();
-   if(!topReorderedProducts.length) return <Loader />;
+   
    const chartData: any[] = topReorderedProducts.slice(0,2);
-   const otherData: any[] = topReorderedProducts.slice(2,topReorderedProducts.length-1);
-   chartData.push({
+   const otherData: any[] = topReorderedProducts.slice(2,topReorderedProducts.length);
+   if(topReorderedProducts.length > 2) chartData.push({
       title: 'Other',
-      price: '$',
+      price: '$--',
       count: otherData.map((item) => item.count).reduce((acc, cur) => acc + cur, 0)
    })
    const data: any = { 
@@ -116,14 +115,16 @@ export default function Other({title, other, topReorderedProducts, totalReorderC
                               </tr>
                            </thead>
                            <tbody>
-                              {isLoading && <tr><td colSpan={3} align="center"><span className="spinner-grow" role="status"></span></td></tr>}
-                              {!isLoading && !topReorderedProducts[0]?.title? (<tr><td colSpan={3}>Not product found!</td></tr>): !isLoading && topReorderedProducts.map((product: ITopReorderedProducts, index: number) => {
+                              
+                              {!topReorderedProducts[0]?.title? (<tr><td colSpan={3}>No product found!</td></tr>)
+                                 : topReorderedProducts.map((product: ITopReorderedProducts, index: number) => {
                                  return (<tr key={index}>
                                     <td>{product.title}</td>
                                     <td>{product.price}</td>
                                     <td>{product.count}</td> 
                                  </tr>)
-                              })}
+                                 })
+                              }
                            </tbody>
                         </table>
                      </div>

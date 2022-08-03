@@ -1,35 +1,67 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import moment from "moment";
 import { useHistory } from "react-router-dom";
 
+
 import ADateRangePicker from "./date-range-picker";
+import { useAnalytics, useUtility } from "../../../store";
+import { orderCounters } from "../api";
+
+const currentDate = new Date();
+const intialAnalyticsData = {
+   store_domain: 'upscribe-emporium.myshopify.com',
+   start_date: moment(currentDate).subtract(1, 'M').format('YYYY-MM-DD'),
+   end_date: moment(currentDate).format('YYYY-MM-DD')
+}
+
+
+const stores: any[] = [      
+   {
+      name: 'upscribe-emporium',
+      domain: 'upscribe-emporium.myshopify.com'
+   },
+   {
+      name: 'upscribe-stage',
+      domain: 'upscribe-stage.myshopify.com'
+   },
+   {
+      name: 'mednow-store',
+      domain: 'mednow-store.myshopify.com'
+   }
+];
+
 export default function AnalyticsFilter() {
+   const {
+      setIOrderCountSources,
+      setTopReorderedProducts,       
+      setTotalReorderCounts } = useAnalytics();
+
+   const { setIsLoading } = useUtility();
    
-   const currentDate = new Date();
    const [open, setOpen] = useState(false);
-   const [startDate, setStartDate] = useState(moment(currentDate).subtract(1, 'M').format('MM/DD/YYYY'));
-   const [endDate, setEndDate] = useState(moment(currentDate).format('MM/DD/YYYY'));
+   const [startDate, setStartDate] = useState(intialAnalyticsData.start_date);
+   const [endDate, setEndDate] = useState(intialAnalyticsData.end_date);
    const [dateRange, setDateRange] = useState(startDate+' to ' + endDate);
-   const [currentStore, setCurrentStore] = useState('');
-   const stores: any[] = [
-      {
-         name: 'upscribe-stage',
-         domain: 'upscribe-stage.myshopify.com'
-      },
-      {
-         name: 'mednow-store',
-         domain: 'mednow-store.myshopify.com'
-      }
-   ];
+   const [currentStore, setCurrentStore] = useState(intialAnalyticsData.store_domain);
+
    const datePickerToggleRef = useRef(null);
    
    const history = useHistory();
 
    const handleFilter = (e: any) => {
       e.preventDefault();
-      e.stopPropagation();
-      history.push(`/?store_domain=${currentStore}=start_date=${startDate}&end_date=${endDate}`);
+      setIsLoading(true);      
+      orderCounters({store_domain: currentStore, start_date: startDate, end_date: endDate})
+         .then((data: any) => {
+            setIOrderCountSources(data.orderSummery);
+            setTopReorderedProducts(data.reorderedProducts);
+            setTotalReorderCounts(data.topReorderEventCount);
+            setIsLoading(false);
+            history.push(`/master-admin/analytics-data?store_domain=${currentStore}=start_date=${startDate}&end_date=${endDate}`);
+         })
+         .catch((err: Error) => console.log(err));
    }
+   
    return (
       <>
       <form 
@@ -59,14 +91,14 @@ export default function AnalyticsFilter() {
                open={open}
                onChange={(ranges: any) => {
                   const {startDate, endDate} = ranges;
-                  setStartDate(moment(startDate).format('MM/DD/YYYY'));
-                  setEndDate(moment(endDate).format('MM/DD/YYYY'));
+                  setStartDate(moment(startDate).format('YYYY-MM-DD'));
+                  setEndDate(moment(endDate).format('YYYY-MM-DD'));
                   setDateRange(
                      moment(new Date(startDate))
-                     .format('MM/DD/YYYY') 
+                     .format('YYYY-MM-DD') 
                      + ' to ' + 
                      moment(new Date(endDate))
-                     .format('MM/DD/YYYY')
+                     .format('YYYY-MM-DD')
                   );
                   setOpen(false)
                }}
