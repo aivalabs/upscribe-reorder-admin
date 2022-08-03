@@ -1,5 +1,8 @@
 {
    "root": "build/",
+   "routes": {
+    "/**": "index.html"
+   },
    "proxies": {
      "/master-admin/": {
        "origin": "https://upscribe-repeat-mvp.herokuapp.com"
