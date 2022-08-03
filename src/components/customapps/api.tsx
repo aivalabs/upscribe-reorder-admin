@@ -4,7 +4,7 @@ export const getCustomApps = async () => {
    try {
       const response: any = await axios({
          method: 'get',
-         url: `/master-admin/custom-apps`
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`
       });
       let apps: ICustomApp[] = response?.data?.data || [];
       if(apps.length) apps = apps.map((app: any) => ({
@@ -36,7 +36,7 @@ export const createCustomApp = async (payload: ICreateCustomApp) => {
    try {
       const res: any = await axios({
          method: 'post',
-         url: `/master-admin/custom-apps`,
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`,
          data: JSON.stringify(payload),
          headers: {
             'Content-Type': 'application/json',            

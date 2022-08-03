@@ -11,7 +11,7 @@ export const orderCounters = async (params: any): Promise<any> => {
 
       const response = await axios({
          method: 'get',
-         url: `/master-admin/analytics-data?${p.toString()}`,
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/analytics-data?${p.toString()}`,
          headers: {
             'Content-Type': 'application/json',
          }
