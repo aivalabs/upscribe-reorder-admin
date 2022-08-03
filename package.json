@@ -40,6 +40,7 @@
       "react-app/jest"
     ]
   },
+  "proxy": "http://localhost:3333/master-admin",
   "browserslist": {
     "production": [
       ">0.2%",

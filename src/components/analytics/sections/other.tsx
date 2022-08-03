@@ -1,4 +1,4 @@
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, ArcElement, Tooltip, Legend,registerables  } from 'chart.js';
 import { Chart } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
@@ -6,7 +6,7 @@ import Card from "../snippents/card";
 import SectionTitle from "../../common/snippets/section-title";
 import { IOtherSectionProp, ITopReorderedProducts } from "../types";
 
-ChartJS.register(ArcElement, Tooltip, Legend,ChartDataLabels );
+ChartJS.register(...registerables, ArcElement, Tooltip, Legend,ChartDataLabels );
 
 
 export default function Other({title, other, topReorderedProducts, totalReorderCounts} : IOtherSectionProp ): JSX.Element {   

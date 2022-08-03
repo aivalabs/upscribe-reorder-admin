@@ -57,7 +57,7 @@ export default function AnalyticsFilter() {
             setTopReorderedProducts(data.reorderedProducts);
             setTotalReorderCounts(data.topReorderEventCount);
             setIsLoading(false);
-            history.push(`/master-admin/analytics-data?store_domain=${currentStore}=start_date=${startDate}&end_date=${endDate}`);
+            history.push(`/master-admin/analytics-data?store_domain=${currentStore}&start_date=${startDate}&end_date=${endDate}`);
          })
          .catch((err: Error) => console.log(err));
    }
