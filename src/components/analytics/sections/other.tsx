@@ -93,7 +93,7 @@ export default function Other({title, other, topReorderedProducts, totalReorderC
                   <br />
                   <Card name="Lowest Order Value" value={other?.lowestOrderValue} />
                   <br />
-                  <Card name="Highest Order Value" value={other?.lowestOrderValue} />
+                  <Card name="Highest Order Value" value={other?.highestOrderValue} />
                </div>
             </div>
             <div className="col-12 col-md-9">               
