@@ -7,6 +7,8 @@ import SectionTitle from "../../common/snippets/section-title";
 import { IOtherSectionProp, ITopReorderedProducts } from "../types";
 
 ChartJS.register(ArcElement, Tooltip, Legend,ChartDataLabels );
+
+
 export default function Other({title, other, topReorderedProducts, totalReorderCounts} : IOtherSectionProp ): JSX.Element {   
    
    const chartData: any[] = topReorderedProducts.slice(0,2);
@@ -87,11 +89,11 @@ export default function Other({title, other, topReorderedProducts, totalReorderC
          <div className="row mt-3">
             <div className="col-12 col-md-3">
                <div className="d-flex flex-column">
-                  <Card name="Average Order Value" value={other.avgOrderValue} />
+                  <Card name="Average Order Value" value={other?.avgOrderValue} />
                   <br />
-                  <Card name="Lowest Order Value" value={other.lowestOrderValue} />
+                  <Card name="Lowest Order Value" value={other?.lowestOrderValue} />
                   <br />
-                  <Card name="Highest Order Value" value={other.lowestOrderValue} />
+                  <Card name="Highest Order Value" value={other?.lowestOrderValue} />
                </div>
             </div>
             <div className="col-12 col-md-9">               
