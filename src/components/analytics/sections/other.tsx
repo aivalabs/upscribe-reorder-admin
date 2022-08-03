@@ -3,10 +3,8 @@ import { Chart } from 'react-chartjs-2';
 import ChartDataLabels from 'chartjs-plugin-datalabels';
 
 import Card from "../snippents/card";
-import SectionTitle from "../snippents/section-title";
+import SectionTitle from "../../common/snippets/section-title";
 import { IOtherSectionProp, ITopReorderedProducts } from "../types";
-import { useUtility } from "../../../store";
-import { Loader } from '../loader';
 
 ChartJS.register(ArcElement, Tooltip, Legend,ChartDataLabels );
 export default function Other({title, other, topReorderedProducts, totalReorderCounts} : IOtherSectionProp ): JSX.Element {   

@@ -1,64 +1,35 @@
-import PageTitle from "../analytics/snippents/page-title";
-import SectionTitle from "../analytics/snippents/section-title";
+import { useEffect } from "react";
+import { useCustomApps } from "../../store";
+import { Loader } from "../analytics/loader";
+import PageTitle from "../common/snippets/page-title";
+import { getCustomApps } from "./api";
+import CustomAppsList from "./sections/customapplist";
+import { useUtility } from "../../store";
+import AddNewCustomApp from "./sections/add-new-app";
 
 export default function CustomApps() {
+  const { customApps, setCustomApps } = useCustomApps();
+  const {isLoading, setIsLoading} = useUtility();
+  useEffect(() => {
+    setIsLoading(true);
+    getCustomApps()
+    .then((data: any) => {
+      if(data?.apps?.length > 0) setCustomApps(data?.apps);      
+      setIsLoading(false);
+    })
+    .catch((error: any) => {
+      console.log(error);    
+      setIsLoading(false);  
+    })
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
       <>
-        <PageTitle title="Manage Custom Apps"/>
-        <SectionTitle title="All apps" />
-        <div className="row">
-          <div className="col-12">
-            <table className="table">
-              <thead>
-                <tr>
-                  <th scope="col">App name</th>
-                  <th scope="col">Store domain</th>
-                  <th scope="col">Api key</th>
-                  <th scope="col">Api secret</th>
-                  <th scope="col">Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>1</td>
-                  <td>
-                    <button className="btn btn-danger btn-sm">Delete</button>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        <SectionTitle title="Add new app" />
-        <div className="row">
-          <div className="col-12">
-          <form>
-            <div className="mb-3">
-              <label htmlFor="appName" className="form-label">App Name:</label>
-              <input name="appName" type="text" className="form-control" id="appName" aria-describedby="appHelp" />
-              <div id="appHelp" className="form-text">We'll never share your email with anyone else.</div>
-            </div>
-            <div className="mb-3">
-              <label htmlFor="shopifyDomain" className="form-label">Associated Store's Shopify Domain:</label>
-              <input name="shopifyDomain" type="text" className="form-control" id="shopifyDomain" />
-            </div>
-
-            <div className="mb-3">
-              <label htmlFor="apiKey" className="form-label">App Api Key:</label>
-              <input name="apiKey" type="text" className="form-control" id="apiKey" />
-            </div>  
-            <div className="mb-3">
-              <label htmlFor="apiSecret" className="form-label">App Api Secret:</label>
-              <input name="apiSecret" type="text" className="form-control" id="apiSecret" />
-            </div>            
-            <button type="submit" className="btn btn-primary">Submit</button>
-          </form>
-          </div>
-        </div>
+        <PageTitle title="Manage Custom Apps"/>        
+        {isLoading? <Loader /> : (<>
+          <CustomAppsList customApps={customApps} />
+          <AddNewCustomApp />
+        </>)}
       </>
 
   );

@@ -10,7 +10,7 @@ export const orderCounters = async (params: any): Promise<any> => {
 
    const response = await axios({
       method: 'get',
-      url: `http://localhost:3333/master-admin/analytics-data?${p.toString()}`,
+      url: `/master-admin/analytics-data?${p.toString()}`,
       headers: {
          'Content-Type': 'application/json',
       }

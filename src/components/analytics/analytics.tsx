@@ -4,7 +4,7 @@ import { orderCounters } from "./api";
 import { Loader } from "./loader";
 import CardSection from "./sections/card-section";
 import Other from "./sections/other";
-import PageTitle from "./snippents/page-title";
+import PageTitle from "../common/snippets/page-title";
 import AnalyticsFilter from "./snippents/analytics-filter";
 import moment from "moment";
 
@@ -35,7 +35,10 @@ export default function Analytics() {
             setIsLoading(false);
             
          })
-         .catch((err: Error) => console.log(err));
+         .catch((err: Error) => {
+            console.log(err)
+            setIsLoading(false);
+         });
       // eslint-disable-next-line react-hooks/exhaustive-deps
    }, []);
    return (
@@ -43,16 +46,17 @@ export default function Analytics() {
          <PageTitle title="Analytics" element={<AnalyticsFilter />}/>
          {
             isLoading ?
-               <div className="m-3"><Loader /></div>
-               : <>
-                  <div className="row mt-4">
-                     <div className="col-md-4"></div>
-                     <div className="col-md-8"></div>
-                  </div>
-                  <CardSection title="Number of Orders" card={orderCounts} />
-                  <CardSection title="Total Revenue Generated" card={revenue} />
-                  <Other title="Others" other={other} topReorderedProducts={topReorderedProducts} totalReorderCounts={totalReorderCounts}/>
-               </>
+            <div className="m-3"><Loader /></div>
+            : 
+            <>
+               <div className="row mt-4">
+                  <div className="col-md-4"></div>
+                  <div className="col-md-8"></div>
+               </div>
+               <CardSection title="Number of Orders" card={orderCounts} />
+               <CardSection title="Total Revenue Generated" card={revenue} />
+               <Other title="Others" other={other} topReorderedProducts={topReorderedProducts} totalReorderCounts={totalReorderCounts}/>
+            </>
          }
       </>
    );
