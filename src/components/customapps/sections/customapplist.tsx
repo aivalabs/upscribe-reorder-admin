@@ -1,6 +1,9 @@
 import { ICustomApp } from "../types"
 import SectionTitle from "../../common/snippets/section-title"
+import { deleteCustomApp } from "../api"
+import { useUtility } from "../../../store"
 export default function CustomAppsList({customApps}: any) {
+   const {setIsHardReload} = useUtility();
    return (
       <>
          <SectionTitle title="All apps" />
@@ -24,7 +27,11 @@ export default function CustomAppsList({customApps}: any) {
                      <td>{app.apiKey}</td>
                      <td>{app.apiSecret}</td>
                      <td>
-                        <button className="btn btn-danger btn-sm">Delete</button>
+                        <button data-app-id={app.id} className="btn btn-danger btn-sm" onClick={(e: any) => {
+                           e.target.dataset.appId && deleteCustomApp(e.target.dataset.appId).then(() => {
+                              setIsHardReload(true);
+                           })
+                        }}>Delete</button>
                      </td>
                   </tr>
                   )): <tr><td colSpan={5}>No apps found</td></tr>}                

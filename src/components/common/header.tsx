@@ -3,6 +3,9 @@ import {
    Link,
    NavLink
  } from "react-router-dom";
+import Logout from "../auth/logout";
+
+
 export default function Header() {
    return (
       <header className="header border-bottom border-secondary py-2">
@@ -22,6 +25,9 @@ export default function Header() {
                      >
                         Custom Apps
                      </NavLink>
+                  </li>
+                  <li className="px-3">
+                     <Logout />
                   </li>
                </ul>
             </div>

@@ -9,20 +9,24 @@ import AddNewCustomApp from "./sections/add-new-app";
 
 export default function CustomApps() {
   const { customApps, setCustomApps } = useCustomApps();
-  const {isLoading, setIsLoading} = useUtility();
-  useEffect(() => {
+  const {isLoading, setIsLoading, isHardReload, setIsHardReload} = useUtility();
+
+  useEffect(() => {    
     setIsLoading(true);
     getCustomApps()
     .then((data: any) => {
       if(data?.apps?.length > 0) setCustomApps(data?.apps);      
       setIsLoading(false);
+      
     })
     .catch((error: any) => {
       console.log(error);    
-      setIsLoading(false);  
-    })
+      setIsLoading(false);
+      
+    });
+    setIsHardReload(false);
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isHardReload]);
   return (
       <>
         <PageTitle title="Manage Custom Apps"/>        

@@ -1,50 +1,33 @@
 import { useState } from "react";
 import SectionTitle from "../../common/snippets/section-title";
-import { createCustomApp, getCustomApps } from "../api";
-import { useUtility, useCustomApps } from "../../../store";
+import { createCustomApp } from "../api";
+import { useUtility } from "../../../store";
 
 export default function AddNewCustomApp () {
    const [errors, setErrors] = useState([]);
-   const { setCustomApps } = useCustomApps();
-   const {setIsLoading} = useUtility();
+   const { setIsHardReload} = useUtility();
 
    const handleOnSubmit = (e: any) => {
       e.preventDefault();
       const d: any = new FormData(e.target);
       for (const [key, value] of d.entries()) {
-         console.log(key, value);
          d[key] = value;
       }
       createCustomApp(d)
       .then((data: any) => {
          if(data?.app) {
-            setIsLoading(true);
-            getCustomApps()
-            .then((data: any) => {
-               if(data?.apps?.length > 0) setCustomApps(data?.apps);      
-               setIsLoading(false);
-            })
-            .catch((error: any) => {
-               console.log(error);    
-               setIsLoading(false);  
-            })
-         };
-         if(data?.error) setErrors(data.data);
+            setIsHardReload(true);
+         }
+         if(data?.errors) setErrors(data.errors);
       })
-      .catch(e => console.error(e))
+      .catch(e => {
+         console.log(e, 'createCustomApp')
+      })
    }
    return (
       <>
       <SectionTitle title="Add new app" />
         <div className="row">
-         {errors.length > 0 && <div className="col-12">
-            <div className="alert alert-danger d-flex align-items-start flex-column" role="alert">            
-               {errors.map((error: any, index: number) => (
-                  <div key={index}>{error.message}</div>
-               ))}
-            </div>
-         </div>}
-
          {errors.length > 0 && <div className="col-12">
             <div className="alert alert-danger d-flex align-items-start flex-column" role="alert">            
                {errors.map((error: any, index: number) => (

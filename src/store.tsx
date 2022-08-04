@@ -29,8 +29,10 @@ export const useCustomApps = create<ICustomAppState>() (
 export const useUtility = create<any>()(
    devtools(
      persist((set) => ({
-         isLoading: true,
-         setIsLoading: (isLoading: boolean) => set((s: any) => ({...s, isLoading}))
+        isLoading: true,
+        setIsLoading: (isLoading: boolean) => set((s: any) => ({...s, isLoading})),
+        isHardReload: false,
+        setIsHardReload: (isHardReload: boolean) => set((s: any) => ({...s, isHardReload})),  
      }))
    )
  );

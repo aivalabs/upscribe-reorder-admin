@@ -4,7 +4,10 @@ export const getCustomApps = async () => {
    try {
       const response: any = await axios({
          method: 'get',
-         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`
+         url: `/master-admin/custom-apps`, 
+         headers: {
+            'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+         }
       });
       let apps: ICustomApp[] = response?.data?.data || [];
       if(apps.length) apps = apps.map((app: any) => ({
@@ -19,20 +22,20 @@ export const getCustomApps = async () => {
 
       return {
          'apps': apps,
-         'status': response.status
+         'status': response.status,
+         'message': 'success'
       };
    } catch (error: any) {
       console.log(error )
       return {
-         'error': error.message,
+         'message': error.message,
          'status': error?.reponse?.status,
-         'data': error?.response?.data?.errors
+         'errors': error?.response?.data?.errors
       };
    }   
 }
 
 export const createCustomApp = async (payload: ICreateCustomApp) => {
-   console.log(JSON.stringify(payload), 'JSON.stringify(payload)')
    try {
       const res: any = await axios({
          method: 'post',
@@ -45,14 +48,39 @@ export const createCustomApp = async (payload: ICreateCustomApp) => {
 
       return {
          'app': res?.data?.data,
-         'status': res.status
+         'status': res.status,
+         'message': 'success'
       }
    } catch (error: any) {
       return {
-         'error': error.message,
+         'message': error.message,
          'status': error?.response?.status,
-         'data': error?.response?.data?.errors
+         'errors': error?.response?.data?.errors
       }
    }
 
+}
+
+export const deleteCustomApp = async (id: string) => {
+   try {
+      const res: any = await axios({
+         method: 'delete',
+         url: `/master-admin/custom-apps/${id}`,
+         headers: {
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem('auth_token')}`,         
+         }
+      });
+
+      return {
+         'status': res.status,
+         'message': 'Successfuly deleted'
+      }
+   } catch (error: any) {
+      return {
+         'message': error.message,
+         'status': error?.response?.status,
+         'errors': error?.response?.data?.errors
+      }
+   }
 }
