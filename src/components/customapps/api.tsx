@@ -4,7 +4,7 @@ export const getCustomApps = async () => {
    try {
       const response: any = await axios({
          method: 'get',
-         url: `/master-admin/custom-apps`, 
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`, 
          headers: {
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
@@ -65,7 +65,7 @@ export const deleteCustomApp = async (id: string) => {
    try {
       const res: any = await axios({
          method: 'delete',
-         url: `/master-admin/custom-apps/${id}`,
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps/${id}`,
          headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,         

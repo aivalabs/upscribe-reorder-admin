@@ -14,12 +14,9 @@ import CustomApps from './components/customapps/custom-apps';
 import AuthProvider from './components/auth/authprovider';
 import AuthGurd from './components/auth/authgurd';
 import LoginPage from './components/auth/login';
-import {useAuth} from './components/auth/authprovider';
 
 
 function App() {
-  const auth = useAuth();
-  console.log(auth, 'useAuth');
   return (
     <AuthProvider>
       <div className="App">

@@ -11,7 +11,7 @@ export const orderCounters = async (params: any): Promise<any> => {
 
       const response = await axios({
          method: 'get',
-         url: `/master-admin/analytics-data?${p.toString()}`,
+         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/analytics-data?${p.toString()}`,
          headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
@@ -24,7 +24,7 @@ export const orderCounters = async (params: any): Promise<any> => {
       const reorderedProducts: ITopReorderedProducts[] = topOrderProducts.map((product: any) => {
          return {
             title: product.product_title,
-            price: product.product_price,
+            price: moneyFormater(product.product_price),
             count: product.order_count
          }
       });
@@ -80,48 +80,3 @@ export const orderCounters = async (params: any): Promise<any> => {
 const moneyFormater = (value: number) => {
    return value? `$${value.toFixed(2)}` : '$0.00';
 }
-
-export const topReorderedProducts = (): any => {
-   return new Promise((resolve, reject) => {
-      
-      const reorderedProducts: ITopReorderedProducts[] = [
-         {
-            title: 'My test t-shirt',
-            price: '$1250',
-            count: 1250
-         },
-         {
-            title: 'Cool white table lamp',
-            price: '$575',
-            count: 575
-         },
-         {
-            title: 'Product 3',
-            price: '$401',
-            count: 401
-         },
-         {
-            title: 'Product 4',
-            price: '$274',
-            count: 274
-         },
-         {
-            title: 'Product 5',
-            price: '$98.99',
-            count: 98
-         },
-         {
-            title: 'Product 6',
-            price: '$28.99',
-            count: 10
-         }
-      ];
-
-      const t: number = reorderedProducts.map((item: any) => item.count).reduce( (previousValue:any, currentValue:any) =>  previousValue + currentValue);
-      setTimeout(() => {return resolve({
-         products:reorderedProducts, 
-         totalReorderCounts: t
-      })}, 3500)
-      
-   });
-};
