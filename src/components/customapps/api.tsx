@@ -1,16 +1,16 @@
-import axios from "axios"
+import axios from 'axios';
 import { ICustomApp, ICreateCustomApp } from "./types";
 export const getCustomApps = async () => {
    try {
       const response: any = await axios({
          method: 'get',
-         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`, 
+         url: `/master-admin/custom-apps`,
          headers: {
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
       });
       let apps: ICustomApp[] = response?.data?.data || [];
-      if(apps.length) apps = apps.map((app: any) => ({
+      if (apps.length) apps = apps.map((app: any) => ({
          id: app.id,
          appName: app.app_name,
          storeDomain: app.store_domain,
@@ -26,23 +26,24 @@ export const getCustomApps = async () => {
          'message': 'success'
       };
    } catch (error: any) {
-      console.log(error )
+      console.log(error)
       return {
          'message': error.message,
          'status': error?.reponse?.status,
          'errors': error?.response?.data?.errors
       };
-   }   
+   }
 }
 
 export const createCustomApp = async (payload: ICreateCustomApp) => {
    try {
       const res: any = await axios({
          method: 'post',
-         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps`,
+         url: `/master-admin/custom-apps`,
          data: JSON.stringify(payload),
          headers: {
-            'Content-Type': 'application/json',            
+            'Content-Type': 'application/json',
+            'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
       });
 
@@ -65,10 +66,10 @@ export const deleteCustomApp = async (id: string) => {
    try {
       const res: any = await axios({
          method: 'delete',
-         url: `https://upscribe-repeat-mvp.herokuapp.com/master-admin/custom-apps/${id}`,
+         url: `/master-admin/custom-apps/${id}`,
          headers: {
             'Content-Type': 'application/json',
-            'authorization': `Bearer ${localStorage.getItem('auth_token')}`,         
+            'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
       });
 
