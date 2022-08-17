@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { ICustomApp, ICreateCustomApp } from "./types";
 
-const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000';
+const API_HOST = process.env.REACT_APP_API_HOST || 'https://upscribe-repeat-mvp.herokuapp.com';
 
 export const getCustomApps = async () => {
    try {
