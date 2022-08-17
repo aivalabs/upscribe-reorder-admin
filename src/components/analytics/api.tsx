@@ -1,22 +1,36 @@
 import axios from "axios";
-import { IOrderCountSources, ITopReorderedProducts, IOrderInfo,IOtherAnalyticsInfo } from "./types";
+import { IOrderCountSources, ITopReorderedProducts, IOrderInfo, IOtherAnalyticsInfo } from "./types";
+
+const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000';
+
+export const getStores = async (): Promise<any> => {
+   const response = await axios({
+      method: 'get',
+      url: `${API_HOST}/master-admin/stores`,
+      headers: {
+         'Content-Type': 'application/json',
+         'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+      }
+   }).then((res: any) => res.data);
+   return response.stores;
+};
 
 export const orderCounters = async (params: any): Promise<any> => {
    try {
       const { store_domain, start_date, end_date } = params || {};
       const p = new URLSearchParams();
-      if(store_domain) p.append("store_domain", store_domain);
-      if(start_date) p.append("start_date", start_date);
-      if(end_date) p.append("end_date", end_date);
+      if (store_domain) p.append("store_domain", store_domain);
+      if (start_date) p.append("start_date", start_date);
+      if (end_date) p.append("end_date", end_date);
 
       const response = await axios({
          method: 'get',
-         url: `/master-admin/analytics-data?${p.toString()}`,
+         url: `${API_HOST}/master-admin/analytics-data?${p.toString()}`,
          headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
-      }) 
+      })
       const data: any = response.data.data;
       const orderSummery = data.orders_summary;
       const topOrderProducts = data.top_ordered_products;
@@ -51,12 +65,12 @@ export const orderCounters = async (params: any): Promise<any> => {
          highestOrderValue: moneyFormater(overall?.highest_order_value)
       }
       let topReorderEventCount: number = 0
-      if(reorderedProducts.length > 0) {
-         topReorderEventCount = reorderedProducts?.map((item: any) => item.count)?.reduce( (previousValue:any, currentValue:any) =>  previousValue + currentValue);
+      if (reorderedProducts.length > 0) {
+         topReorderEventCount = reorderedProducts?.map((item: any) => item.count)?.reduce((previousValue: any, currentValue: any) => previousValue + currentValue);
       }
 
 
-      
+
       const orderSummerys: IOrderCountSources = {
          orderCounts: orderCounts,
          revenue: revenue,
@@ -67,7 +81,7 @@ export const orderCounters = async (params: any): Promise<any> => {
          reorderedProducts,
          topReorderEventCount
       };
-   }  catch (e: any) {
+   } catch (e: any) {
       return {
          error: e.message,
          orderSummery: {},
@@ -78,5 +92,5 @@ export const orderCounters = async (params: any): Promise<any> => {
 };
 
 const moneyFormater = (value: number) => {
-   return value? `$${value.toFixed(2)}` : '$0.00';
+   return value ? `$${value.toFixed(2)}` : '$0.00';
 }

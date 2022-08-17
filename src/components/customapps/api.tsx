@@ -1,10 +1,13 @@
 import axios from 'axios';
 import { ICustomApp, ICreateCustomApp } from "./types";
+
+const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000';
+
 export const getCustomApps = async () => {
    try {
       const response: any = await axios({
          method: 'get',
-         url: `/master-admin/custom-apps`,
+         url: `${API_HOST}/master-admin/custom-apps`,
          headers: {
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
          }
@@ -39,7 +42,7 @@ export const createCustomApp = async (payload: ICreateCustomApp) => {
    try {
       const res: any = await axios({
          method: 'post',
-         url: `/master-admin/custom-apps`,
+         url: `${API_HOST}/master-admin/custom-apps`,
          data: JSON.stringify(payload),
          headers: {
             'Content-Type': 'application/json',
@@ -66,7 +69,7 @@ export const deleteCustomApp = async (id: string) => {
    try {
       const res: any = await axios({
          method: 'delete',
-         url: `/master-admin/custom-apps/${id}`,
+         url: `${API_HOST}/master-admin/custom-apps/${id}`,
          headers: {
             'Content-Type': 'application/json',
             'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
