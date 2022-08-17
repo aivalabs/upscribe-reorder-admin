@@ -2,6 +2,19 @@ import axios from "axios";
 import { IOrderCountSources, ITopReorderedProducts, IOrderInfo, IOtherAnalyticsInfo } from "./types";
 
 const API_HOST = process.env.REACT_APP_API_HOST || 'http://localhost:3000';
+
+export const getStores = async (): Promise<any> => {
+   const response = await axios({
+      method: 'get',
+      url: `${API_HOST}/master-admin/stores`,
+      headers: {
+         'Content-Type': 'application/json',
+         'authorization': `Bearer ${localStorage.getItem('auth_token')}`,
+      }
+   }).then((res: any) => res.data);
+   return response.stores;
+};
+
 export const orderCounters = async (params: any): Promise<any> => {
    try {
       const { store_domain, start_date, end_date } = params || {};
