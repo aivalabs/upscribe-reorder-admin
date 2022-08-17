@@ -44,7 +44,6 @@ export default function AddNewCustomApp () {
                <div className="mb-3">
                <label htmlFor="app_name" className="form-label">App Name:</label>
                <input name="app_name" type="text" className="form-control" id="app_name" aria-describedby="appHelp" />
-               <div id="appHelp" className="form-text">We'll never share your email with anyone else.</div>
                </div>
                <div className="mb-3">
                <label htmlFor="store_domain" className="form-label">Associated Store's Shopify Domain:</label>
